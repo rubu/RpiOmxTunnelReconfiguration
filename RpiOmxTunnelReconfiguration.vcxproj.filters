@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source files">
+      <UniqueIdentifier>{39051c03-4210-4a10-b289-9f78bcd4cc09}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header files">
+      <UniqueIdentifier>{31b8d548-3a99-4f21-802d-496cf8aaae5c}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource files">
+      <UniqueIdentifier>{e7bcaf69-a2d4-4461-9ea2-56f5738a76a4}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Make files">
+      <UniqueIdentifier>{0c67bc05-9c72-40fa-a57f-fa6374b96396}</UniqueIdentifier>
+      <Extensions>*.mak</Extensions>
+    </Filter>
+    <Filter Include="Header files\Broadcomm">
+      <UniqueIdentifier>{15dca088-e5de-4add-9bd7-884f9b8754f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Omx">
+      <UniqueIdentifier>{3e27be07-5569-498f-8f9f-84db183dd8f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\Omx">
+      <UniqueIdentifier>{2f4e139d-3364-4fcb-aad3-bb808feee460}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\Vcos">
+      <UniqueIdentifier>{897a1c2f-c9bf-469d-b922-90ab9510f56e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="RpiOmxTunnelReconfiguration.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Omx\Component.cpp">
+      <Filter>Source files\Omx</Filter>
+    </ClCompile>
+    <ClCompile Include="Omx\ComponentPort.cpp">
+      <Filter>Source files\Omx</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Makefile" />
+    <None Include="debug.mak">
+      <Filter>Make files</Filter>
+    </None>
+    <None Include="release.mak">
+      <Filter>Make files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Omx\Component.hpp">
+      <Filter>Header files\Omx</Filter>
+    </ClInclude>
+    <ClInclude Include="Omx\ComponentPort.hpp">
+      <Filter>Header files\Omx</Filter>
+    </ClInclude>
+    <ClInclude Include="Omx\Graph.hpp">
+      <Filter>Header files\Omx</Filter>
+    </ClInclude>
+    <ClInclude Include="Omx\H264VideoDecoder.hpp">
+      <Filter>Header files\Omx</Filter>
+    </ClInclude>
+    <ClInclude Include="Omx\Omx.hpp">
+      <Filter>Header files\Omx</Filter>
+    </ClInclude>
+    <ClInclude Include="Omx\Tunnel.hpp">
+      <Filter>Header files\Omx</Filter>
+    </ClInclude>
+    <ClInclude Include="Omx\VideoRenderer.hpp">
+      <Filter>Header files\Omx</Filter>
+    </ClInclude>
+    <ClInclude Include="Broadcom\BroadcomHost.hpp">
+      <Filter>Header files\Broadcomm</Filter>
+    </ClInclude>
+    <ClInclude Include="Error.hpp">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="H264PlaybackGraph.hpp">
+      <Filter>Source files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vcos\HeapMemory.hpp">
+      <Filter>Header files\Vcos</Filter>
+    </ClInclude>
+    <ClInclude Include="Vcos\Vcos.hpp">
+      <Filter>Header files\Vcos</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -13,17 +13,17 @@ OBJCOPY := objcopy
 
 #Additional flags
 PREPROCESSOR_MACROS := NDEBUG RELEASE
-INCLUDE_DIRS := 
-LIBRARY_DIRS := 
-LIBRARY_NAMES := 
-ADDITIONAL_LINKER_INPUTS := 
-MACOS_FRAMEWORKS := 
+INCLUDE_DIRS :=/opt/vc/include /opt/vc/include/interface/vcos/pthreads /opt/vc/include/interface/vmcs_host/linux
+LIBRARY_DIRS :=/opt/vc/lib
+LIBRARY_NAMES :=bcm_host openmaxil
+ADDITIONAL_LINKER_INPUTS :=
+MACOS_FRAMEWORKS :=
 
-CFLAGS := -ggdb -ffunction-sections -O3
-CXXFLAGS := -ggdb -ffunction-sections -O3
-ASFLAGS := 
+CFLAGS := -ggdb -ffunction-sections -O3 -std=c++0x
+CXXFLAGS := -ggdb -ffunction-sections -O3 -std=c++0x
+ASFLAGS :=
 LDFLAGS := -Wl,-gc-sections
-COMMONFLAGS := 
+COMMONFLAGS :=
 
 START_GROUP := -Wl,--start-group
 END_GROUP := -Wl,--end-group

@@ -35,8 +35,10 @@
 #define __UINTMAX_TYPE__ long long unsigned int
 #define __linux 1
 #define __DEC32_EPSILON__ 1E-6DF
+#define __OPTIMIZE__ 1
 #define __CHAR_UNSIGNED__ 1
 #define __UINT32_MAX__ 4294967295U
+#define __GXX_EXPERIMENTAL_CXX0X__ 1
 #define __LDBL_MAX_EXP__ 1024
 #define __WINT_MIN__ 0U
 #define __linux__ 1
@@ -45,6 +47,7 @@
 #define __DBL_DIG__ 15
 #define __SIZEOF_INT__ 4
 #define __SIZEOF_POINTER__ 4
+#define NDEBUG 1
 #define __USER_LABEL_PREFIX__ 
 #define __STDC_HOSTED__ 1
 #define __LDBL_HAS_INFINITY__ 1
@@ -57,6 +60,7 @@
 #define __SIZEOF_LONG__ 4
 #define __DECIMAL_DIG__ 17
 #define __gnu_linux__ 1
+#define RELEASE 1
 #define __ARM_PCS_VFP 1
 #define __LDBL_HAS_QUIET_NAN__ 1
 #define __GNUC__ 4
@@ -71,6 +75,7 @@
 #define __DEC32_MIN_EXP__ (-94)
 #define __THUMB_INTERWORK__ 1
 #define __INT_FAST16_TYPE__ int
+#define __STRICT_ANSI__ 1
 #define __LDBL_HAS_DENORM__ 1
 #define __cplusplus 1
 #define __DEC128_MAX__ 9.999999999999999999999999999999999E6144DL
@@ -95,7 +100,6 @@
 #define __UINT16_MAX__ 65535
 #define __DBL_HAS_DENORM__ 1
 #define __UINT8_TYPE__ unsigned char
-#define __NO_INLINE__ 1
 #define __FLT_MANT_DIG__ 24
 #define __VERSION__ "4.6.3"
 #define __FLOAT_WORD_ORDER__ __ORDER_LITTLE_ENDIAN__
@@ -104,7 +108,6 @@
 #define __DEC128_MIN_EXP__ (-6142)
 #define __INT_FAST32_TYPE__ int
 #define __UINT_LEAST16_TYPE__ short unsigned int
-#define unix 1
 #define __INT16_MAX__ 32767
 #define __SIZE_TYPE__ unsigned int
 #define __UINT64_MAX__ 18446744073709551615ULL
@@ -140,7 +143,6 @@
 #define __DEC32_MAX_EXP__ 97
 #define __INT_FAST8_MAX__ 127
 #define __INTPTR_MAX__ 2147483647
-#define linux 1
 #define __EXCEPTIONS 1
 #define __LDBL_MANT_DIG__ 53
 #define __DBL_HAS_QUIET_NAN__ 1
@@ -208,11 +210,12 @@
 #define __UINT_FAST8_TYPE__ unsigned char
 #define _GNU_SOURCE 1
 #define __ARM_FEATURE_DSP 1
-#define NDEBUG 
-#define RELEASE 
 #endif
 
 // --- Include directories begin --- //
+///opt/vc/include
+///opt/vc/include/interface/vcos/pthreads
+///opt/vc/include/interface/vmcs_host/linux
 ///usr/include/c++/4.6
 ///usr/include/c++/4.6/arm-linux-gnueabihf
 ///usr/include/c++/4.6/backward

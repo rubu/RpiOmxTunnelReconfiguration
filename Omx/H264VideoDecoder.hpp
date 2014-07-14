@@ -84,15 +84,24 @@ namespace Omx
 		}
 		~CH264VideoDecoder()
 		{
-			for (size_t nBufferIndex = 0; nBufferIndex < m_BufferHeaders.size(); ++nBufferIndex)
+			try
 			{
-				Vcos::CHeapMemory* pHeapMemory = reinterpret_cast<Vcos::CHeapMemory*>(m_BufferHeaders[nBufferIndex]->pAppPrivate);
-				delete pHeapMemory;
-				OMX_ERRORTYPE nError = OMX_FreeBuffer(m_hComponent, 130, m_BufferHeaders[nBufferIndex]);
-				if (nError != OMX_ErrorNone)
+				for (size_t nBufferIndex = 0; nBufferIndex < m_BufferHeaders.size(); ++nBufferIndex)
 				{
-					std::cerr << "Error: failed to free H264 decoder buffer" << std::endl;
+					Vcos::CHeapMemory* pHeapMemory = reinterpret_cast<Vcos::CHeapMemory*>(m_BufferHeaders[nBufferIndex]->pAppPrivate);
+					delete pHeapMemory;
+					OMX_ERRORTYPE nError = OMX_FreeBuffer(m_hComponent, 130, m_BufferHeaders[nBufferIndex]);
+					if (nError != OMX_ErrorNone)
+					{
+						std::cerr << "Error: failed to free H264 decoder buffer" << std::endl;
+					}
 				}
+				m_OutputPort.Disable();
+				m_InputPort.Disable();
+			}
+			catch (std::exception& Exception)
+			{
+				std::cerr << "Error: " << Exception.what() << std::endl;
 			}
 		}
 		OMX_ERRORTYPE EmptyBufferDone(OMX_BUFFERHEADERTYPE* pBuffer)

@@ -82,6 +82,7 @@
     <ClInclude Include="Omx\VideoRenderer.hpp" />
     <ClInclude Include="H264PlaybackGraph.hpp" />
     <ClInclude Include="Vcos\HeapMemory.hpp" />
+    <ClInclude Include="Vcos\Thread.hpp" />
     <ClInclude Include="Vcos\Vcos.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -87,5 +87,8 @@
     <ClInclude Include="Vcos\Vcos.hpp">
       <Filter>Header files\Vcos</Filter>
     </ClInclude>
+    <ClInclude Include="Vcos\Thread.hpp">
+      <Filter>Header files\Vcos</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

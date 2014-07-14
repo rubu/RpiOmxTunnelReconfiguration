@@ -10,6 +10,12 @@ namespace Omx
 		std::string sStateChangedEventName(m_sName);
 		sStateChangedEventName.append(":state_changed_event");
 		CHECK_VCOS(vcos_event_create(&m_StateChangedEvent, sStateChangedEventName.c_str()), "failed to create vcos event");
+		std::string sEventThreadName(m_sName);
+		sEventThreadName.append(":event_thread");
+		m_EventThread.Start(&CComponent::EventThreadProc, this, sEventThreadName.c_str());
+		std::string sEventQueueMutexName(m_sName);
+		sEventQueueMutexName.append(":event_queue_mutex");
+		vcos_mutex_create(&m_EventQueueMutex, sEventThreadName.c_str());
 		OMX_CALLBACKTYPE Callbacks;
 		Callbacks.EventHandler = &CComponent::EventHandler;
 		Callbacks.EmptyBufferDone = &CComponent::EmptyBufferDone;
@@ -51,7 +57,7 @@ namespace Omx
 		{
 		case OMX_EventCmdComplete:
 			{
-				switch (nData1)
+			switch (nData1)
 				{
 				case OMX_CommandStateSet:
 					vcos_event_signal(&m_StateChangedEvent);
@@ -59,18 +65,18 @@ namespace Omx
 				case OMX_CommandPortEnable:
 				case OMX_CommandPortDisable:
 					{
-					   CPortMap::iterator PortIterator = m_Ports.find(nData2);
-					   if (PortIterator != m_Ports.end())
-					   {
-						   if (nData1 == OMX_CommandPortEnable)
-						   {
-							   PortIterator->second->OnEnabled();
-						   }
-						   else if (nData1 == OMX_CommandPortDisable)
-						   {
-							   PortIterator->second->OnDisabled();
-						   }
-					   }
+						CPortMap::iterator PortIterator = m_Ports.find(nData2);
+						if (PortIterator != m_Ports.end())
+						{
+							if (nData1 == OMX_CommandPortEnable)
+							{
+								PortIterator->second->OnEnabled();
+							}
+							else if (nData1 == OMX_CommandPortDisable)
+							{
+								PortIterator->second->OnDisabled();
+							}
+						}
 					}
 					break;
 				case OMX_CommandFlush:
@@ -90,7 +96,17 @@ namespace Omx
 		case OMX_EventPortSettingsChanged:
 			if (m_pGraph)
 			{
-				m_pGraph->OnPortSettingsChanged(this, nData1);
+				CComponentEvent Event;
+				Event.m_EventType = OMX_EventPortSettingsChanged;
+				Event.m_nData1 = nData1;
+				Event.m_nData2 = nData2;
+				Event.m_pEventData = pEventData;
+				{
+					CHECK_VCOS(vcos_mutex_lock(&m_EventQueueMutex), "failed to lock event queue mutex");
+					m_EventQueue.push_back(Event);
+					vcos_mutex_unlock(&m_EventQueueMutex);
+				}
+				vcos_event_flags_set(&m_EventThread.GetEventFlags(), s_nNewEventFlag, VCOS_OR);
 			}
 			break;
 		case OMX_EventError:
@@ -99,7 +115,6 @@ namespace Omx
 		default:
 			break;
 		}
-		return OMX_ErrorNone;
 	}
 	OMX_ERRORTYPE CComponent::EmptyBufferDone(OMX_BUFFERHEADERTYPE* pBuffer)
 	{
@@ -121,5 +136,58 @@ namespace Omx
 	{
 		CComponent* pComponent = reinterpret_cast<CComponent*>(pAppData);
 		return pComponent->FillBufferDone(pBuffer);
+	}
+	void *CComponent::EventThreadProc(VCOS_EVENT_FLAGS_T& EventFlags, VCOS_EVENT_T& InitialzedEvent)
+	{
+		vcos_event_signal(&InitialzedEvent);
+		VCOS_UNSIGNED nEvents;
+		try
+		{
+			for (;;)
+			{
+				CHECK_VCOS(vcos_event_flags_get(&EventFlags, CThread::s_nTerminationFlag | s_nNewEventFlag, VCOS_CONSUME, VCOS_SUSPEND, &nEvents), "failed to wait for events");
+				if (nEvents & CThread::s_nTerminationFlag)
+				{
+					// Component is being destoryed
+					break;
+				}
+				else if (nEvents & s_nNewEventFlag)
+				{
+					// New event that cannot be handled in the notification callback
+					bool bEventsPending = false;
+					do
+					{
+
+						CComponentEvent Event;
+						{
+							CHECK_VCOS(vcos_mutex_lock(&m_EventQueueMutex), "failed to lock event queue mutex");
+							Event = m_EventQueue.front();
+							m_EventQueue.pop_front();
+							bEventsPending = !m_EventQueue.empty();
+							vcos_mutex_unlock(&m_EventQueueMutex);
+						}
+						switch (Event.m_EventType)
+						{
+						case OMX_EventPortSettingsChanged:
+							{
+								if (m_pGraph)
+								{
+									m_pGraph->OnPortSettingsChanged(this, Event.m_nData1);
+								}
+							}
+							break;
+						default:
+							break;
+						}
+					}
+					while (bEventsPending);
+				}
+			}
+		}
+		catch (std::exception& Exception)
+		{
+			std::cerr << "Error: " << Exception.what() << std::endl;
+		}
+		return NULL;
 	}
 }

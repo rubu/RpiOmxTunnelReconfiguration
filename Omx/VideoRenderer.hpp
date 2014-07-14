@@ -21,6 +21,17 @@ namespace Omx
 			ChangeState(OMX_StateIdle);
 			ChangeState(OMX_StateExecuting);
 		}
+		~CVideoRenderer()
+		{
+			try
+			{
+				m_InputPort.Disable();
+			}
+			catch (std::exception& Exception)
+			{
+				std::cerr << "Error: " << Exception.what() << std::endl;
+			}
+		}
 		CComponentPort& GetInputPort()
 		{
 			return m_InputPort;
